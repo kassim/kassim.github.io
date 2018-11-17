@@ -1,0 +1,707 @@
+"""Angel call details."""
+type angel_call {
+  """Date when the angel call ends."""
+  endDate: String
+
+  """ID of the angel call"""
+  id: String
+
+  """Date when the angel call starts."""
+  startDate: String
+}
+
+"""List of available angel calls."""
+type angel_calls {
+  angelcalls: [angel_call]
+}
+
+type applyTask {
+  """default field"""
+  empty: String
+}
+
+"""Attendance details."""
+type attendance {
+  """default field"""
+  empty: String
+}
+
+"""Dispute details with orga infos"""
+type attendance_disputes_info {
+  """default field"""
+  empty: String
+}
+
+"""Payload to create an attendance."""
+input attendance_payloadInput {
+  breaks: [breakInput]
+
+  """Date when the clock in happend"""
+  clockInTime: String
+
+  """Date when the clock out happend"""
+  clockOutTime: String
+
+  """Does this payload represents a clock in ?"""
+  clockingIn: Boolean
+
+  """Does this payload represents a clock out ?"""
+  clockingOut: Boolean
+
+  """Is the task of type `deadline` ?"""
+  isDeadline: Boolean
+
+  """ID of the mobile attendance."""
+  mobileLocalAttendanceId: String
+
+  """ID of the organisation."""
+  organisationId: String!
+
+  """ID of the shift."""
+  shiftId: String
+
+  """ID of the task."""
+  taskId: String!
+}
+
+"""Payload to create an attendance summary."""
+input attendance_summary_payloadInput {
+  """ID of the attendance."""
+  attendanceId: String!
+  breaks: [breakInput]
+
+  """Date when the clock in happend"""
+  clockInTime: String
+
+  """Date when the clock out happend"""
+  clockOutTime: String
+
+  """Is the task of type `deadline` ?"""
+  isDeadline: Boolean
+
+  """ID of the mobile attendance."""
+  mobileLocalAttendanceId: String
+
+  """ID of the organisation."""
+  organisationId: String
+
+  """ID of the shift."""
+  shiftId: String
+
+  """is this a summary ?"""
+  summary: Boolean!
+
+  """ID of the task."""
+  taskId: String
+}
+
+type bookAngelCall {
+  """default field"""
+  empty: String
+}
+
+"""Break details."""
+input breakInput {
+  """Duration of the break"""
+  duration: Float
+
+  """Date when the break ended"""
+  endDate: String!
+
+  """Date when the break started"""
+  startDate: String!
+}
+
+type cancelAngelCall {
+  """default field"""
+  empty: String
+}
+
+"""Card details."""
+type card {
+  """ID of the card ¯\_(ツ)_/¯"""
+  _id: String
+
+  """Key of the card action"""
+  actionKey: String
+
+  """Body of the card."""
+  body: String!
+
+  """Title to display on the action button"""
+  buttonTitle: String
+
+  """City ID of the task ¯\_(ツ)_/¯"""
+  cityId: String
+
+  """Color of the card."""
+  color: String!
+
+  """Country of the task ¯\_(ツ)_/¯"""
+  country: String
+
+  """Index where the card should be displayed"""
+  index: Int!
+  shifts: [card_shift]
+
+  """Title of the card."""
+  title: String!
+
+  """Type of the card."""
+  type: String!
+}
+
+"""Action card shift dates."""
+type card_shift {
+  """default field"""
+  empty: String
+}
+
+"""City details."""
+type city {
+  """default field"""
+  empty: String
+}
+
+"""Payload to confirm presence to a task"""
+input confirm_task_payloadInput {
+  """Has the user confirm his presence ?"""
+  confirm: Boolean!
+
+  """The reson if the user doesn't confirm?"""
+  reason: String
+}
+
+type confirmTaskPresence {
+  """default field"""
+  empty: String
+}
+
+input credentialsInput {
+  """The user's email."""
+  email: String!
+
+  """The user's hashed password."""
+  password: String!
+}
+
+type deleteUserAttendance {
+  """default field"""
+  empty: String
+}
+
+type deleteUserDeviceToken {
+  """default field"""
+  empty: String
+}
+
+type deleteUserExperience {
+  """default field"""
+  empty: String
+}
+
+type deleteUserFormation {
+  """default field"""
+  empty: String
+}
+
+type Mutation {
+  """Cancel an angel call session"""
+  cancelAngelCall: cancelAngelCall
+
+  """Book an angel call session"""
+  bookAngelCall(angel_call_id: String!): bookAngelCall
+
+  """Returns the user's token"""
+  login(credentials: credentialsInput): token
+
+  """Send a mail to reset password"""
+  resetPassword(body: user_email_payloadInput): resetPassword
+
+  """Returns the user's token"""
+  signup(body: user_payloadInput): token
+
+  """Returns the updated user."""
+  updateUser(body: user_profile_payloadInput): user
+
+  """Returns the new user attendance"""
+  createAttendance(body: attendance_payloadInput): attendance
+
+  """Update a user attendance to send it to company"""
+  updateAttendanceAsSummary(attendanceId: String!, body: attendance_summary_payloadInput): attendance
+
+  """Delete a user attendance"""
+  deleteUserAttendance(attendanceId: String!): deleteUserAttendance
+
+  """Update a user attendance dispute on acceptation"""
+  reviewUserAttendanceDispute(attendanceId: String!, body: review_dispute_payloadInput): reviewUserAttendanceDispute
+
+  """Returns nothing uppon success"""
+  updateUserAvailabilities(body: user_availabilities_payloadInput): updateUserAvailabilities
+
+  """Returns the newly created user formation"""
+  updateUserBankAccount(body: user_bank_account_payloadInput): user_settings
+
+  """Update a user device token in database"""
+  updateUserDeviceToken(body: user_device_token_payloadInput): updateUserDeviceToken
+
+  """Delete a user device token in database"""
+  deleteUserDeviceToken: deleteUserDeviceToken
+
+  """Returns the new user experience"""
+  createUserExperience(body: user_experience_payloadInput): user_experience
+
+  """Returns the udpated user experience"""
+  updateUserExperience(experience_id: String!, body: user_experience_payloadInput): user_experience
+
+  """Delete the user experience and returns nothing uppon success"""
+  deleteUserExperience(experience_id: String!): deleteUserExperience
+
+  """Returns the new user formation"""
+  createUserFormation(body: user_formation_payloadInput): user_formation
+
+  """Returns the updated user formation"""
+  updateUserFormation(formation_id: String!, body: user_formation_payloadInput): user_formation
+
+  """Delete the formation and returns nothing upon success"""
+  deleteUserFormation(formation_id: String!): deleteUserFormation
+
+  """Returns all the user's hobbies"""
+  updateUserHobbies(body: [user_hobbyInput]): [user_hobby]
+
+  """Returns nothing uppon update"""
+  updateUserIdentityCheck(body: user_id_check_payloadInput): updateUserIdentityCheck
+
+  """Returns nothing uppon update"""
+  updateUserGeneralNotification(body: user_notification_payloadInput): updateUserGeneralNotification
+
+  """Returns nothing uppon update"""
+  updateUserTaskNotification(task_notification_id: String!, body: user_notification_payloadInput): updateUserTaskNotification
+
+  """Update the user password."""
+  updateUserPassword(body: user_password_payloadInput): updateUserPassword
+
+  """Returns the updated user settings"""
+  updateUserSettings(body: user_settings_payloadInput): user_settings
+
+  """Confirm the user's presence for a given task"""
+  confirmTaskPresence(taskId: String!, body: confirm_task_payloadInput): confirmTaskPresence
+
+  """Returns nothing upon application."""
+  applyTask(taskId: String!, body: task_application_payloadInput): applyTask
+}
+
+"""Task details."""
+type my_task {
+  """default field"""
+  empty: String
+}
+
+"""Rating of an organisation"""
+type organisation_ratings {
+  """Average rating for this company."""
+  avg: String
+
+  """List of reviews"""
+  ratings: [rating_review]
+
+  """Number of ratings."""
+  size: Float
+}
+
+"""Payment summary."""
+type payment {
+  """default field"""
+  empty: String
+}
+
+"""Payment summary."""
+type payment_summary {
+  """default field"""
+  empty: String
+}
+
+type Query {
+  """Returns the list of available angel calls"""
+  getAvailableAngelCalls: angel_calls
+
+  """Returns the list of available cities."""
+  getCities(locale: String): [city]
+
+  """Returns the user's data"""
+  getUser: user
+
+  """Returns the all user's badges"""
+  getUserBadges: [user_badge]
+
+  """Returns the user's disputes"""
+  getUserDisputes: [attendance_disputes_info]
+
+  """Returns all the user's experiences"""
+  getUserExperiences: [user_experience]
+
+  """Returns all the user's formations"""
+  getUserFormations: [user_formation]
+
+  """Returns all the user's hobbies"""
+  getUserHobbies: [user_hobby]
+
+  """Returns a user messages of the given type"""
+  getUserMessages(type: String!): [user_message]
+
+  """Returns the user's notification settings"""
+  getUserNotificationSettings: user_notification_settings
+
+  """Returns the user's payments"""
+  getPayments: [payment_summary]
+
+  """Returns a user's payment details"""
+  getPayment(payment_id: String!): payment
+
+  """Returns the user's settings"""
+  getUserSettings: user_settings
+
+  """Returns all the user's tasks"""
+  getMyTasks: [my_task]
+
+  """Returns the user's upcoming tasks to confirm"""
+  getUpcomingTasks(locale: String!): [upcoming_task]
+
+  """Returns the list of reviews for this organisation."""
+  getOrganisationRatings(organisationId: String!): organisation_ratings
+
+  """Returns the list of available tasks."""
+  getTasks(country: String!, city: String, locale: String!): task_list
+
+  """Returns the task details."""
+  getTask(taskId: String!): task_short
+}
+
+"""Sider review for this company"""
+type rating_review {
+  """default field"""
+  empty: String
+}
+
+type resetPassword {
+  """default field"""
+  empty: String
+}
+
+"""Payload to review dispute"""
+input review_dispute_payloadInput {
+  """Has the user accepted the dispute ?"""
+  accepted: Boolean!
+}
+
+type reviewUserAttendanceDispute {
+  """default field"""
+  empty: String
+}
+
+"""SIRET number"""
+input SIRETInput {
+  """default field"""
+  empty: String
+}
+
+"""Task application"""
+input task_application_payloadInput {
+  """List of answers for the task questions."""
+  answers: [String]
+
+  """List of shifts to apply to."""
+  shifts: [String]
+}
+
+"""List of available tasks with the cards of the users"""
+type task_list {
+  cards: [card]!
+  tasks: [task_short]!
+}
+
+"""Task details."""
+type task_short {
+  """default field"""
+  empty: String
+}
+
+type token {
+  """The user's id."""
+  id: String!
+
+  """The access token issued by the authorization server."""
+  token: String!
+
+  """The lifetime in seconds of the access token."""
+  token_expires: String!
+}
+
+"""Task details."""
+type upcoming_task {
+  """default field"""
+  empty: String
+}
+
+type updateUserAvailabilities {
+  """default field"""
+  empty: String
+}
+
+type updateUserDeviceToken {
+  """default field"""
+  empty: String
+}
+
+type updateUserGeneralNotification {
+  """default field"""
+  empty: String
+}
+
+type updateUserIdentityCheck {
+  """default field"""
+  empty: String
+}
+
+type updateUserPassword {
+  """default field"""
+  empty: String
+}
+
+type updateUserTaskNotification {
+  """default field"""
+  empty: String
+}
+
+type user {
+  """default field"""
+  empty: String
+}
+
+"""Payload to create / update a user availabilities."""
+input user_availabilities_payloadInput {
+  """Date when the user ends being available for missions."""
+  endDate: String
+
+  """List of availabilities type of the user."""
+  partType: [String]
+
+  """Postal code of the user."""
+  postalCode: String
+
+  """Date when the job experience ended."""
+  sideTime: String
+
+  """Date when the user starts being available for missions."""
+  startDate: String
+
+  """Type of job the user is looking for."""
+  type: String
+}
+
+"""Badge details."""
+type user_badge {
+  """Image URL of the badge."""
+  badge: String!
+
+  """Title of the badge."""
+  title: String!
+}
+
+"""User bank account details."""
+input user_bank_account_payloadInput {
+  """Stripe bank account token."""
+  stripeBankAccountToken: String
+}
+
+"""Notification token of the device."""
+input user_device_token_payloadInput {
+  """Name of the device platform."""
+  device: String!
+
+  """Notification token of the device."""
+  deviceToken: String!
+
+  """Locale of the user."""
+  locale: String!
+}
+
+"""Payload to reset email."""
+input user_email_payloadInput {
+  """The user's email address."""
+  email: String!
+}
+
+"""A user job experience"""
+type user_experience {
+  """default field"""
+  empty: String
+}
+
+"""Payload to create / update a user job experiences."""
+input user_experience_payloadInput {
+  """Description of the job experience."""
+  companyJob: String
+
+  """Name of the company where this experience took place."""
+  companyName: String
+
+  """Date when the job experience ended."""
+  endDate: String
+
+  """Date when the job experience started."""
+  startDate: String
+}
+
+"""Formation details."""
+type user_formation {
+  """default field"""
+  empty: String
+}
+
+"""Payload to create / update a user formation."""
+input user_formation_payloadInput {
+  """Date when the job experience ended."""
+  endDate: String
+
+  """Level of the formation."""
+  level: String
+
+  """Name of the school."""
+  name: String
+
+  """Speciality of the formation."""
+  speciality: String
+
+  """Date when the job experience started."""
+  startDate: String
+}
+
+"""Hobby details."""
+type user_hobby {
+  """Name of the hobby."""
+  name: String
+}
+
+"""Hobby details."""
+input user_hobbyInput {
+  """Name of the hobby."""
+  name: String
+}
+
+"""User identity documents."""
+input user_id_check_payloadInput {
+  """document picture"""
+  document: String
+
+  """document back picture"""
+  document_back: String
+}
+
+"""Message details."""
+type user_message {
+  """default field"""
+  empty: String
+}
+
+"""Notification payload."""
+input user_notification_payloadInput {
+  """Does the user want to subscribe to the notification ?"""
+  subscription: Boolean!
+}
+
+"""User notification settings."""
+type user_notification_settings {
+  """Has the user enabled the general notifications ?"""
+  generalNotif: Boolean!
+
+  """List of task catefories available for notification subscription."""
+  taskCategories: [user_task_category_notification]
+}
+
+"""Payload to update a user's password."""
+input user_password_payloadInput {
+  """The user's new password."""
+  newPassword: String
+
+  """The user's old password."""
+  oldPassword: String
+}
+
+"""The user signup payload"""
+input user_payloadInput {
+  """The user's email address."""
+  email: String
+
+  """The user's first name."""
+  firstName: String
+
+  """The user's last name."""
+  lastName: String
+
+  """The user's password."""
+  password: String
+}
+
+"""The user's profile details payload."""
+input user_profile_payloadInput {
+  """The user's biography."""
+  bio: String
+
+  """The user's birth date."""
+  dateOfBirth: String
+
+  """The user's first name."""
+  firstName: String
+
+  """The user's gender."""
+  gender: String
+
+  """The user's last name."""
+  lastName: String
+
+  """The user's phone number."""
+  phoneNumber: String
+
+  """The user's birth date."""
+  pictureUrl: String
+}
+
+"""Settings of a user"""
+type user_settings {
+  """default field"""
+  empty: String
+}
+
+"""Payload to create / update the user settings."""
+input user_settings_payloadInput {
+  SIRET: SIRETInput
+
+  """The user's city."""
+  city: String
+
+  """The user's country."""
+  country: String
+
+  """The user's address."""
+  line1: String
+
+  """The user's zip code."""
+  postalCode: String
+}
+
+"""Task catefories available for notification subscription."""
+type user_task_category_notification {
+  """Id of the job category"""
+  categoryId: String
+
+  """Name of the job category"""
+  categoryName: String
+
+  """Description of the job category"""
+  descriptionJobTypes: String
+
+  """Has the user subscribed to this notification ?"""
+  subscription: Boolean!
+}
+
